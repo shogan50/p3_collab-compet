@@ -2,7 +2,7 @@ import torch
 class Config:
     def __init__(self):
         self.buffer_size = 100000        # replay buffer size
-        self.batch_size = 256           # minibatch size
+        self.batch_size = int(256 / 4)           # minibatch size
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.gamma = 0.99               # discount factor
         self.tau = .001                  # for soft update of target parameters
@@ -15,5 +15,5 @@ class Config:
         self.fc1_units = 256
         self.fc2_units = 128
         self.sigma = 0.5                # noise variance
-        self.num_repeats = 3            # repeat learning step x times
+        self.num_repeats = 3 * 4            # repeat learning step x times
         self.seed = 1000

@@ -181,12 +181,8 @@ class DDPG_Agent():
         """
         f_states, actor_f_actions, f_actions, agent_rewards, agent_dones, f_next_states,\
             critic_f_next_actions = experiences  #f_ means full
-        # print(f_next_states.shape, critic_f_next_actions.shape)
         # ---------------------------- update critic ---------------------------- #
-        # Get predicted next-state actions and Q values from target models
-        # actions_next = self.actor_target(next_states)
-        # print('fs and fa shapes should be [256,48] and [256,4]',f_next_states.shape,critic_f_next_actions.shape)
-        Q_targets_next = self.critic_target(f_next_states, critic_f_next_actions)
+        Q_targets_next = self.critic_target(f_next_states, critic_f_next_actions) # Q'(si+1,µ'(si+1|θµ')|θQ')  https://arxiv.org/pdf/1509.02971.pdf Algorithm 1
         # Compute Q targets for current states (y_i)
         Q_targets = agent_rewards + (gamma * Q_targets_next * (1 - agent_dones))
         # Compute critic loss
@@ -200,13 +196,11 @@ class DDPG_Agent():
 
         # ---------------------------- update actor ---------------------------- #
         # Compute actor loss
-        # actions_pred = self.actor_local(f_states)
         actor_loss = -self.critic_local(f_states, actor_f_actions).mean()
         # Minimize the loss
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
-
     #
     def soft_update_all(self):
         self.soft_update(self.critic_local, self.critic_target, self.tau)
