@@ -81,6 +81,7 @@ def train(env, config):
 
         if episode % 10 == 0 and episode > 20:  # Lets occasionally save the weights just in case
             agent.save_maddpg()
+            plotter.save()
 
         if len(scores_hist) > 100 and np.mean(scores_hist[-100:]) >= .5:  # yippee!
             print('Met project requirement in {} episodes'.format(
