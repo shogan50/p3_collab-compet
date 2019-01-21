@@ -83,16 +83,16 @@ def train(env, config):
         if len(scores_hist) > 100 and np.mean(scores_hist[-100:]) >= .5:  # yippee!
             print('Met project requirement in {} episodes'.format(
                 episode + 1))  # TODO: we coule probably stop the training here, or only send this message once
-            f = open('scores_hist.txt', "a")
-            for l in range(len(scores_hist)):
-                f.write(scores_hist[l])
-            f.close()
 
     return scores_hist
 
 
 config = Config()
-print(config.__dict__)
-train(env, config)
+print(config.__dict__)              #record setup to log file
+scores_hist = train(env, config)
+f = open('scores_hist.txt', "a")
+for l in range(len(scores_hist)):
+    f.write(scores_hist[l])
+f.close()
 
 plt.show()
