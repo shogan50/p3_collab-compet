@@ -31,7 +31,7 @@ class MADDPG():
         # print('sizes should be (48,) (2, 24) -->>', f_states.shape, states.shape)
         self.memory.add(f_states, states, actions, rewards, f_next_states, next_states, dones)
         
-        if len(self.memory) > max(config.batch_size, 1000):
+        if len(self.memory) > max(config.batch_size, 300*14):  # there are typically 14 steps in an episode in the beginning.
             for _ in range(config.num_repeats):
                 for agent_no in range(self.num_agents):
                     samples = self.memory.sample()
@@ -144,26 +144,8 @@ class DDPG_Agent():
         self.noise = OUNoise(action_size, random_seed, sigma=config.sigma)
 
         # Replay memory
-        # self.memory = ReplayBuffer(action_size, self.buffer_size, self.batch_size, random_seed)  #not used in MADDPG version
         self.hard_update(self.actor_target, self.actor_local)
         self.hard_update(self.critic_target, self.critic_local)
-    #
-    # def step(self, states, actions, rewards, next_states, dones):
-    #     config = self.config
-    #     """Save experience in replay memory, and use random sample from buffer to learn."""
-    #     # Save experience / reward
-    #
-    #     for state, action, reward, next_state, done in zip(states, actions, rewards, next_states, dones):
-    #         self.memory.add(state,action, reward, next_state, done)
-    #
-    #     # for idx in range(len(states)):
-    #     #     self.memory.add(states[idx], actions[idx], rewards[idx], next_states[idx], dones[idx])
-    #
-    #     # Learn, if enough samples are available in memory
-    #     if len(self.memory) > config.batch_size:
-    #         experiences = self.memory.sample()
-    #         self.learn(experiences, config.gamma)
-
 
     def act(self, states, add_noise=True, epsilon=1):
         """Returns actions for given state as per current policy."""
@@ -176,8 +158,8 @@ class DDPG_Agent():
             actions = self.actor_local(state).cpu().data.numpy()
         self.actor_local.train()                                        #set the mode back to train
         if add_noise:
-            actions += self.noise.sample() * epsilon
-            #actions +=  0.5*np.random.randn(1,self.action_size)
+            # actions += self.noise.sample() * epsilon
+            actions +=  0.5*np.random.randn(1,self.action_size)
         return np.clip(actions, -1, 1)                                  #the noise can bring this out of range of -1,1
 
 
