@@ -49,6 +49,7 @@ def train(env, config):
     epsilon_min = .05
     plotter = Plot_Scores()
     step_count = 0
+    total_step_count = 0
     for episode in range(config.max_episodes):
         start_t = time.time()  # capture the episode start time  TODO: it would be nice to capture start of train time and report clock duration of solve.
         env_info = env.reset(train_mode=True)[brain_name]  # reset the environment
@@ -66,16 +67,17 @@ def train(env, config):
             agent.step(states, actions, rewards, next_states, dones)  # save SARSD to buffer and learn from buffered SARSD
             states = next_states  # prep for next pass
             step_count += 1
+            total_step_count +=1
             if np.any(dones):  # exit loop if episode finished
                 break
         epsilon *= config.epsilon_decay  # explore a wee bit less
         epsilon = max(epsilon, epsilon_min)  # always explore a little
-        episode_t = time.time() - start_t  # wow that took a long time.
+        # episode_t = time.time() - start_t  # wow that took a long time.
         scores_hist.append(np.max(scores))  # keep track of score history
 
         if episode % 1 == 0 and episode > 2:
             plotter.plot(scores_hist)
-            print_rewards(current_scores=scores, scores_hist=scores_hist, steps=step_count, epsilon=epsilon, ave_len=100)
+            print_rewards(current_scores=scores, scores_hist=scores_hist, steps=step_count, total_steps_count = total_step_count, epsilon=epsilon, ave_len=100)
 
         if episode % 10 == 0 and episode > 20:  # Lets occasionally save the weights just in case
             agent.save_maddpg()
@@ -83,7 +85,7 @@ def train(env, config):
         if len(scores_hist) > 100 and np.mean(scores_hist[-100:]) >= .5:  # yippee!
             print('Met project requirement in {} episodes'.format(
                 episode + 1))  # TODO: we coule probably stop the training here, or only send this message once
-
+    plotter.save()
     return scores_hist
 
 
@@ -94,5 +96,6 @@ f = open('scores_hist.txt', "a")
 for l in range(len(scores_hist)):
     f.write(scores_hist[l])
 f.close()
+
 
 plt.show()

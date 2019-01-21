@@ -7,15 +7,16 @@ import datetime
 
 import sys
 # print_rewards(current_scores=scores, scores_hist=scores_hist, steps=step_count, ave_len=100)
-def print_rewards(current_scores, scores_hist, steps, epsilon, ave_len=100):
+def print_rewards(current_scores, scores_hist, steps, total_steps_count, epsilon, ave_len=100):
     if(len(scores_hist)>1):
         x = np.arange(0, len(scores_hist[-ave_len:]))
         y = np.nan_to_num(scores_hist[-ave_len:])  # getting occasional NAN.  TODO: why?
         z = np.polyfit(x, y, 1)  # outputs [a, b] as in ax+b I think
         slope = z[0]
-        print ('episode:{}, steps:{}, current:[{:5.3f}, {:5.3f}], score:{:5.3f} slope:{:5.3f} epsilon:{:.2f}' \
+        print ('episode:{}, steps:{}, total_steps:{} current:[{:5.3f}, {:5.3f}], score:{:5.3f} slope:{:5.3f} epsilon:{:.2f}' \
                .format(len(scores_hist),
                        steps,
+                       total_steps_count,
                        current_scores[0],
                        current_scores[1],
                        np.mean(scores_hist[-ave_len:]),
@@ -25,7 +26,7 @@ def print_rewards(current_scores, scores_hist, steps, epsilon, ave_len=100):
 
 def print_misc(base_name):
     print('time :' + str(datetime.datetime.now()))
-    print('main file: ' + os.path.basename(__file__))
+    print('main file: ' + base_name)
     print('platform = ' + platform.system())
 
 
@@ -58,6 +59,12 @@ class Plot_Scores:
             self.axes.set_ylim(y_min - np.abs(.05*y_min), y_max + np.abs(.05*y_max))
             plt.draw()
             plt.pause(.1)
+
+    def save(self):
+        plt.savefig('plot_image.png', dpi=None, facecolor='w', edgecolor='w',
+                orientation='portrait', papertype=None, format=None,
+                transparent=False, bbox_inches=None, pad_inches=0.1,
+                frameon=None, metadata=None)
 
 class Logger(object):
     def __init__(self, f_name):

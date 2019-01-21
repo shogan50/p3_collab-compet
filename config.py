@@ -1,7 +1,7 @@
 import torch
 class Config:
     def __init__(self):
-        self.buffer_size = 100000        # replay buffer size
+        self.buffer_size = 10000        # replay buffer size
         self.batch_size = int(256 / 4)           # minibatch size
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.gamma = 0.99               # discount factor
