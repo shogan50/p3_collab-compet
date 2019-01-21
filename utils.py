@@ -13,7 +13,7 @@ def print_rewards(current_scores, scores_hist, steps, total_steps_count, epsilon
         y = np.nan_to_num(scores_hist[-ave_len:])  # getting occasional NAN.  TODO: why?
         z = np.polyfit(x, y, 1)  # outputs [a, b] as in ax+b I think
         slope = z[0]
-        print ('episode:{}, steps:{}, total_steps:{} current:[{:5.3f}, {:5.3f}], score:{:5.3f} slope:{:5.3f} epsilon:{:.2f}' \
+        print ('episode:{}, steps:{}, total steps:{}, current:[{:+.3f}, {:+.3f}], score:{:5.3f} slope:{:.2e} epsilon:{:.2f}' \
                .format(len(scores_hist),
                        steps,
                        total_steps_count,
@@ -61,7 +61,7 @@ class Plot_Scores:
             plt.pause(.1)
 
     def save(self):
-        plt.savefig('plot_image.png', dpi=None, facecolor='w', edgecolor='w',
+        plt.savefig('plot_image.jpeg', dpi=None, facecolor='w', edgecolor='w',
                 orientation='portrait', papertype=None, format=None,
                 transparent=False, bbox_inches=None, pad_inches=0.1,
                 frameon=None, metadata=None)

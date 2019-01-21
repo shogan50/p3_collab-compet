@@ -95,7 +95,7 @@ print(config.__dict__)              #record setup to log file
 scores_hist = train(env, config)
 f = open('scores_hist.txt', "a")
 for l in range(len(scores_hist)):
-    f.write(scores_hist[l])
+    f.write(str(scores_hist[l]))
 f.close()
 
 

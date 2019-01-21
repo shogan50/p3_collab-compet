@@ -31,7 +31,7 @@ class MADDPG():
         # print('sizes should be (48,) (2, 24) -->>', f_states.shape, states.shape)
         self.memory.add(f_states, states, actions, rewards, f_next_states, next_states, dones)
         
-        if len(self.memory) > max(config.batch_size, 300*14):  # there are typically 14 steps in an episode in the beginning.
+        if len(self.memory) > max(config.batch_size, 100*14):  # there are typically 14 steps in an episode in the beginning.
             for _ in range(config.num_repeats):
                 for agent_no in range(self.num_agents):
                     samples = self.memory.sample()
