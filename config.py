@@ -5,7 +5,7 @@ class Config:
         self.batch_size = 256           # minibatch size
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.gamma = 0.99               # discount factor
-        self.tau = .01                  # for soft update of target parameters
+        self.tau = .001                  # for soft update of target parameters
         self.LR_actor = 1e-4            # learning rate of the actor
         self.LR_critic = 3e-4           # learning rate of the critic
         self.weight_decay = 0.0         # L2 weight decay
