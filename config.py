@@ -14,6 +14,6 @@ class Config:
         print('ep decay:', self.epsilon_decay)
         self.fc1_units = 256
         self.fc2_units = 128
-        self.sigma = 0.5                # noise variance
+        self.sigma = 0.2                # noise variance
         self.num_repeats = 1            # repeat learning step x times
         self.seed = 1000

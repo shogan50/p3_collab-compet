@@ -1,5 +1,5 @@
 from unityagents import UnityEnvironment
-
+import random
 from DDPG_agent import MADDPG
 import time
 import datetime
@@ -89,14 +89,25 @@ def train(env, config):
     plotter.save()
     return scores_hist
 
-
 config = Config()
-print(config.__dict__)              #record setup to log file
-scores_hist = train(env, config)
-f = open('scores_hist.txt', "a")
-for l in range(len(scores_hist)):
-    f.write(str(scores_hist[l]))
-f.close()
 
+for trial in range(100):
+    print('trial:',trial)
+    config.buffer_size = random.sample([10000,25000,50000,100000])
+    config.tau = random.sample([.001,.002,.005,.01])
+    config.sigma = random.sample([.1,.2,.3])
+    config.gamma = random.sample([.99,.95,.9])
+    config.LR_critic = random.sample([1e-4,2e-4,5e-4,1e-3])
+    config.LR_actor = random.sample([[1e-4,2e-4,5e-4,1e-3]])
+    config.num_repeats = random.sample([1,3,5])
+    config.epsilon_decay = random.sample([.999,.9995,.9999,.99995])
+
+    print(config.__dict__)              #record setup to log file
+    scores_hist = train(env, config)
+    f = open('scores_hist'+str(trial)+'.txt', "a")
+    for l in range(len(scores_hist)):
+        f.write(str(scores_hist[l]))
+    f.close()
+    print('final_score:',np.mean(scores_hist[-100:]))
 
 plt.show()
