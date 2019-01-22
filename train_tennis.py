@@ -80,34 +80,40 @@ def train(env, config):
             print_rewards(current_scores=scores, scores_hist=scores_hist, steps=step_count, total_steps_count = total_step_count, epsilon=epsilon, ave_len=100)
 
         if episode % 10 == 0 and episode > 20:  # Lets occasionally save the weights just in case
-            agent.save_maddpg()
-            plotter.save()
+            agent.save_maddpg(str(config.trial))
+            plotter.save(str(config.trial))
 
         if len(scores_hist) > 100 and np.mean(scores_hist[-100:]) >= .5:  # yippee!
             print('Met project requirement in {} episodes'.format(
                 episode + 1))  # TODO: we coule probably stop the training here, or only send this message once
-    plotter.save()
+    plotter.save(str(config.trial))
     return scores_hist
 
-config = Config()
+
 
 for trial in range(100):
+    config = Config()
     print('trial:',trial)
-    config.buffer_size = random.sample([10000,25000,50000,100000])
-    config.tau = random.sample([.001,.002,.005,.01])
-    config.sigma = random.sample([.1,.2,.3])
-    config.gamma = random.sample([.99,.95,.9])
-    config.LR_critic = random.sample([1e-4,2e-4,5e-4,1e-3])
-    config.LR_actor = random.sample([[1e-4,2e-4,5e-4,1e-3]])
-    config.num_repeats = random.sample([1,3,5])
-    config.epsilon_decay = random.sample([.999,.9995,.9999,.99995])
+    config.trial = trial
+    config.buffer_size = random.sample([10000,25000,50000,100000],1)[0]
+    print(config.buffer_size)
+    test = random.sample([.001,.002,.005,.01],1)[0]
+    print('test',test)
+    config.tau = random.sample([.001,.002,.005,.01],1)[0]
+    config.sigma = random.sample([.1,.2,.3],1)[0]
+    config.gamma = random.sample([.99,.95,.9],1)[0]
+    config.LR_critic = random.sample([1e-4,2e-4,5e-4,1e-3],1)[0]
+    config.LR_actor = random.sample([1e-4,2e-4,5e-4,1e-3],1)[0]
+    config.num_repeats = random.sample([1,3,5],1)[0]
+    config.epsilon_decay = random.sample([.999,.9995,.9999,.99995],1)[0]
 
     print(config.__dict__)              #record setup to log file
     scores_hist = train(env, config)
     f = open('scores_hist'+str(trial)+'.txt', "a")
     for l in range(len(scores_hist)):
-        f.write(str(scores_hist[l]))
+        f.writelines(str(scores_hist[l]))
     f.close()
     print('final_score:',np.mean(scores_hist[-100:]))
+
 
 plt.show()

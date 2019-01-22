@@ -79,10 +79,10 @@ class MADDPG():
 
         return actions
         
-    def save_maddpg(self):
+    def save_maddpg(self,suffix):
         for agent_id, agent in enumerate(self.MADDPG_agents):
-            torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_local_'    + str(agent_id) + '.pth')
-            torch.save(agent.critic_local.state_dict(),'checkpoint_critic_local_'   + str(agent_id) + '.pth')
+            torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_local_trial_'    + str(agent_id) + suffix +  '.pth')
+            torch.save(agent.critic_local.state_dict(),'checkpoint_critic_local_trial_'   + str(agent_id) + suffix + '.pth')
             
     def load_maddpg(self):
         pass
@@ -231,7 +231,7 @@ class OUNoise:
         self.mu = mu * np.ones(size)
         self.theta = theta
         self.sigma = sigma
-        self.seed = random.seed(seed)
+        random.seed(seed)
         self.reset()
 
     def reset(self):
@@ -266,7 +266,7 @@ class ReplayBuffer:
                                                                 "f_next_state",
                                                                 "next_state",
                                                                 "done"])
-        self.seed = random.seed(config.seed)
+        random.seed(config.seed)
         self.config = config
 
     # self.memory.add(f_states, states, actions, rewards, f_next_states, dones)

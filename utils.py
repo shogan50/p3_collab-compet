@@ -34,6 +34,7 @@ def print_misc(base_name):
 
 class Plot_Scores:
     def __init__(self):
+        plt.clf()
         matplotlib.use('tkagg')  # needed to run on AWS wiht X11 forwarding
         self.line, = plt.plot(np.array(0), np.array(0))
         self.line1, = plt.plot(np.array(0,),np.array(0),'r--')
@@ -60,11 +61,12 @@ class Plot_Scores:
             plt.draw()
             plt.pause(.1)
 
-    def save(self):
-        plt.savefig('plot_image.jpeg', dpi=None, facecolor='w', edgecolor='w',
+    def save(self, suffix):
+        plt.savefig('plot_image trial' + suffix + '.jpeg', dpi=None, facecolor='w', edgecolor='w',
                 orientation='portrait', papertype=None, format=None,
                 transparent=False, bbox_inches=None, pad_inches=0.1,
                 frameon=None, metadata=None)
+
 
 class Logger(object):
     def __init__(self, f_name):

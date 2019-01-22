@@ -9,11 +9,15 @@ class Config:
         self.LR_actor = 1e-4            # learning rate of the actor
         self.LR_critic = 3e-4           # learning rate of the critic
         self.weight_decay = 0.0         # L2 weight decay
-        self.max_episodes = 2500
+        self.max_episodes = 1600
         self.epsilon_decay = .1**(1/(2500 + 300))    # the 300 more or less adjusts for the delay in start of training
         print('ep decay:', self.epsilon_decay)
         self.fc1_units = 256
         self.fc2_units = 128
         self.sigma = 0.2                # noise variance
         self.num_repeats = 1            # repeat learning step x times
-        self.seed = 1000
+        self.seed = None
+        self.trial = 0
+
+    def __setattr__(self, key, value):
+        self.__dict__[key] = value
