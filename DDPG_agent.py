@@ -31,7 +31,7 @@ class MADDPG():
         # print('sizes should be (48,) (2, 24) -->>', f_states.shape, states.shape)
         self.memory.add(f_states, states, actions, rewards, f_next_states, next_states, dones)
         
-        if len(self.memory) > max(config.batch_size, 100*14):  # there are typically 14 steps in an episode in the beginning.
+        if len(self.memory) > config.batch_size:
             for _ in range(config.num_repeats):
                 for agent_no in range(self.num_agents):
                     samples = self.memory.sample()
@@ -155,7 +155,7 @@ class DDPG_Agent():
         state = torch.from_numpy(states).float().to(device)
         self.actor_local.eval()                                         #set the mode to eval
         with torch.no_grad():
-            actions = self.actor_local(state).cpu().data.numpy()
+            actions = self.actor_local(state).cpu().numpy()
         self.actor_local.train()                                        #set the mode back to train
         if add_noise:
             actions += self.noise.sample() * epsilon

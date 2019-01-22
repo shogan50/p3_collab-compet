@@ -90,30 +90,18 @@ def train(env, config):
     return scores_hist
 
 
-
 for trial in range(100):
     config = Config()
     print('trial:',trial)
     config.trial = trial
-    config.buffer_size = random.sample([10000,25000,50000,100000],1)[0]
-    print(config.buffer_size)
-    test = random.sample([.001,.002,.005,.01],1)[0]
-    print('test',test)
-    config.tau = random.sample([.001,.002,.005,.01],1)[0]
-    config.sigma = random.sample([.1,.2,.3],1)[0]
-    config.gamma = random.sample([.99,.95,.9],1)[0]
-    config.LR_critic = random.sample([1e-4,2e-4,5e-4,1e-3],1)[0]
-    config.LR_actor = random.sample([1e-4,2e-4,5e-4,1e-3],1)[0]
-    config.num_repeats = random.sample([1,3,5],1)[0]
-    config.epsilon_decay = random.sample([.999,.9995,.9999,.99995],1)[0]
+    config.tau = [.001,.002][trial]
+    config.max_episodes = 1000
 
     print(config.__dict__)              #record setup to log file
     scores_hist = train(env, config)
     f = open('scores_hist'+str(trial)+'.txt', "a")
-    for l in range(len(scores_hist)):
-        f.writelines(str(scores_hist[l]))
+    f.write(str(scores_hist))
     f.close()
     print('final_score:',np.mean(scores_hist[-100:]))
-
 
 plt.show()
