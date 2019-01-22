@@ -243,6 +243,7 @@ class OUNoise:
         x = self.state
         dx = self.theta * (self.mu - x) + self.sigma * np.array([random.random() for i in range(len(x))])
         self.state = x + dx
+        print(self.state)
         return self.state
 
 
@@ -290,7 +291,7 @@ class ReplayBuffer:
 
 
         """Randomly sample a batch of experiences from memory."""
-        experiences = random.sample(self.memory, k=self.batch_size, probs=probs)
+        experiences = random.sample(self.memory, k=self.batch_size)
         f_states    = torch.from_numpy(np.array([e.f_state for e in experiences if e is not None]))\
             .float().to(device)
         states      = torch.from_numpy(np.array([e.state for e in experiences if e is not None]))\
