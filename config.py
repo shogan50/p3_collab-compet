@@ -15,5 +15,5 @@ class Config:
         self.fc1_units = 256
         self.fc2_units = 128
         self.sigma = 0.5                # noise variance
-        self.num_repeats = 2            # repeat learning step x times
+        self.num_repeats = 1            # repeat learning step x times
         self.seed = 1000

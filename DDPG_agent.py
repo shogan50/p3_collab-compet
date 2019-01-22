@@ -158,8 +158,8 @@ class DDPG_Agent():
             actions = self.actor_local(state).cpu().data.numpy()
         self.actor_local.train()                                        #set the mode back to train
         if add_noise:
-            # actions += self.noise.sample() * epsilon
-            actions +=  0.5*np.random.randn(1,self.action_size)
+            actions += self.noise.sample() * epsilon
+            # actions +=  0.5*np.random.randn(1,self.action_size)
         return np.clip(actions, -1, 1)                                  #the noise can bring this out of range of -1,1
 
 
