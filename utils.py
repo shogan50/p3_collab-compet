@@ -36,7 +36,7 @@ class Plot_Scores:
     def __init__(self):
         plt.clf()
         matplotlib.use('tkagg')  # needed to run on AWS wiht X11 forwarding
-        self.line, = plt.plot(np.array(0), np.array(0))
+        self.line, = plt.plot(np.array(0), np.array(0), 'bo')
         self.line1, = plt.plot(np.array(0,),np.array(0),'r--')
         self.axes = plt.gca()
         plt.ion()

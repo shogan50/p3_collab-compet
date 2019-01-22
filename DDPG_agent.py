@@ -6,6 +6,7 @@ from DDPG_Model import Actor, Critic
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
+import itertools
 
 class MADDPG():
     def __init__(self, state_size, action_size, num_agents, config):
@@ -31,7 +32,7 @@ class MADDPG():
         # print('sizes should be (48,) (2, 24) -->>', f_states.shape, states.shape)
         self.memory.add(f_states, states, actions, rewards, f_next_states, next_states, dones)
         
-        if len(self.memory) > config.batch_size:
+        if len(self.memory) > config.batch_size + 256:
             for _ in range(config.num_repeats):
                 for agent_no in range(self.num_agents):
                     samples = self.memory.sample()
@@ -83,7 +84,6 @@ class MADDPG():
         for agent_id, agent in enumerate(self.MADDPG_agents):
             torch.save(agent.actor_local.state_dict(), 'checkpoint_actor_local_trial_'    + str(agent_id) + suffix +  '.pth')
             torch.save(agent.critic_local.state_dict(),'checkpoint_critic_local_trial_'   + str(agent_id) + suffix + '.pth')
-            
     def load_maddpg(self):
         pass
                     
@@ -257,7 +257,8 @@ class ReplayBuffer:
             batch_size (int): size of each training batch
         """
         self.action_size = action_size
-        self.memory = deque(maxlen=config.buffer_size) # internal memory (deque)
+        # self.memory = deque(maxlen=config.buffer_size) # internal memory (deque)
+        self.memory = []
         self.batch_size = config.batch_size
         self.experience = namedtuple("Experience", field_names=["f_state",
                                                                 "state",
@@ -288,9 +289,8 @@ class ReplayBuffer:
         # probs = np.array(probs)
         # probs = probs/np.sum(probs)
 
-
         """Randomly sample a batch of experiences from memory."""
-        experiences = random.sample(self.memory, k=self.batch_size)
+        experiences = random.sample(self.memory[-self.config.buffer_size:-256], k=self.batch_size)
         f_states    = torch.from_numpy(np.array([e.f_state for e in experiences if e is not None]))\
             .float().to(device)
         states      = torch.from_numpy(np.array([e.state for e in experiences if e is not None]))\

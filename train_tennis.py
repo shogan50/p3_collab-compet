@@ -94,8 +94,13 @@ for trial in range(100):
     config = Config()
     print('trial:',trial)
     config.trial = trial
-    config.tau = [.001,.002][trial]
-    config.max_episodes = 1000
+    config.tau              = [.02, .001][trial]
+    config.LR_actor         = [1e-3, 1e-4][trial]
+    config.LR_critic        = [1e-3, 3e-4][trial]
+    config.num_repeats      = [1, 3][trial]
+    config.epsilon_decay    = [.2**(1/2000),.2**(1/1500)][trial]
+
+    config.max_episodes = 2500
 
     print(config.__dict__)              #record setup to log file
     scores_hist = train(env, config)
