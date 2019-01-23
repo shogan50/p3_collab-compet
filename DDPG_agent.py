@@ -257,8 +257,7 @@ class ReplayBuffer:
             batch_size (int): size of each training batch
         """
         self.action_size = action_size
-        # self.memory = deque(maxlen=config.buffer_size) # internal memory (deque)
-        self.memory = []
+        self.memory = deque(maxlen=config.buffer_size) # internal memory (deque)
         self.batch_size = config.batch_size
         self.experience = namedtuple("Experience", field_names=["f_state",
                                                                 "state",
@@ -289,8 +288,9 @@ class ReplayBuffer:
         # probs = np.array(probs)
         # probs = probs/np.sum(probs)
 
+
         """Randomly sample a batch of experiences from memory."""
-        experiences = random.sample(self.memory[-self.config.buffer_size:-256], k=self.batch_size)
+        experiences = random.sample(self.memory, k=self.batch_size)
         f_states    = torch.from_numpy(np.array([e.f_state for e in experiences if e is not None]))\
             .float().to(device)
         states      = torch.from_numpy(np.array([e.state for e in experiences if e is not None]))\
