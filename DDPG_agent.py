@@ -277,6 +277,8 @@ class ReplayBuffer:
 
     def sample(self):
         device = self.config.device
+        #######################################3
+        # This code not tested.  It's a different take on prioritized experience replay
         # probs = []
         # mu = .75
         # for idx in range(len(self.memory)):
@@ -305,7 +307,6 @@ class ReplayBuffer:
             .float().to(device)
         dones       = torch.from_numpy(np.array([e.done for e in experiences if e is not None])
             .astype(np.uint8)).float().to(device)
-        # print('sample', f_states.shape, states.shape)
         return f_states, states, actions, rewards, f_next_states, next_states, dones
 
     def __len__(self):

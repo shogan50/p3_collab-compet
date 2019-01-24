@@ -19,5 +19,5 @@ class Config:
         self.seed = None
         self.trial = 0
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key, value):  # TODO: I don't think this is actually necessary.  There was a bug previously preventing writing of these attributes.  I'll leave until I can test.
         self.__dict__[key] = value

@@ -2,11 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import platform
-import os
 import datetime
-
 import sys
-# print_rewards(current_scores=scores, scores_hist=scores_hist, steps=step_count, ave_len=100)
+
 def print_rewards(current_scores, scores_hist, steps, total_steps_count, epsilon, ave_len=100):
     if(len(scores_hist)>1):
         x = np.arange(0, len(scores_hist[-ave_len:]))
@@ -29,9 +27,6 @@ def print_misc(base_name):
     print('main file: ' + base_name)
     print('platform = ' + platform.system())
 
-
-
-
 class Plot_Scores:
     def __init__(self):
         plt.clf()
@@ -42,7 +37,6 @@ class Plot_Scores:
         plt.ion()
         plt.xlabel = 'Episode'
         plt.ylabel = 'Mean score'
-
 
     def plot(self, scores_hist):
 

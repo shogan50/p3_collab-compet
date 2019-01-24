@@ -19,7 +19,7 @@ else:                       # assume AWS headless
     cwd = cwd + os.sep + "Tennis_Linux_NoVis"  #omit '_NoVis' to run with graphics,
     env = UnityEnvironment(file_name=cwd + os.sep + "Tennis.x86_64")
 
-# get the default brainasd
+# get the default brains
 brain_name = env.brain_names[0]
 brain = env.brains[brain_name]
 
@@ -94,7 +94,7 @@ for trial in range(100):
     config = Config()
     print('trial:',trial)
     config.trial = trial
-    config.tau              = [.02, .001][trial]
+    config.tau              = [.02, .001][trial]  #list of parameters to try.
     config.LR_actor         = [1e-3, 1e-4][trial]
     config.LR_critic        = [1e-3, 3e-4][trial]
     config.num_repeats      = [1, 3][trial]
