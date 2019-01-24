@@ -32,12 +32,16 @@ num_repeats|1
 ![Training](https://github.com/shogan50/p3_collab-compet/blob/master/misc/plot_image%20trial0.jpeg?raw=true"training")
 The project met the requirements at about 900 episodes. It is interesting that at 1700 episodes, it did more poorly.  Something else that I noticed repeatedly was that after a particularly good run, say a score of 2.5, the agent would then miss the ball entirely.  As a test, after this, I hid the most recent 256 experiences in the replay buffer from the agents.  On a sample size of N=1, the agents failed to learn nearly as well.  This is almost useless information however, as I found that the success is highly dependent on how many successes the agent has in the initial episodes before training.  If there were many, the agent generally trained much faster.  Frequently there would be none in the first 150 episodes. 
 
+There exists a folder called `misc` which contains a jpeg of the most recent training graph, an episode log and saved parameters from a trained agent.  
+
+I didn't write any code to watch a trained agent as the employer provided laptop I use has anti-virus software that doesn't play well with Unity, so I use AWS.  I figured out X11 forwarding, but have been unsuccessful at getting Unity Agents to start.
+
 ## Future improvements
 1. MAPPO
 2. Parameter noise
 3. Prioritized Replay
 
-I've not read any papers on MAPPO, but given the fact that rewards come at most every 15 steps, my intuition, such as it is, tells me that PPO with a rollout of at least 15 should work well. (I understand that value still gets learned in the absence of training on a chain of events with a return.)  
+I've not read any papers on MAPPO, but given the fact that rewards come at most every 15 steps, my intuition, as wrong as it frequently is, tells me that PPO with a rollout of at least 15 should work well. (I understand that value still gets learned in the absence of training on a chain of events with a return.)  
 
 
 There is a paper on adding noise to the network parameters rather than actions which I can't find as I write this.  From memory it resulted in remarkably smoother control of a car in a driving game with simultaneously faster learning.

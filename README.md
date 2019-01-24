@@ -43,3 +43,5 @@ This project started on a windows platform, but the anti virus update installed 
 ### Instructions
 
 From the command line, `execute train_tennis.py`. 
+
+Note the code as of this writing is set up for hyperparameter grid search.  This code will repeatedly run with different hyperparameters.  It will currently run twice before running out of parameters to try. 
